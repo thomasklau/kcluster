@@ -19,9 +19,21 @@
 # limitations under the License.                                             #
 # ---------------------------------------------------------------------------#
 
-import sklearn
+from sklearn.metrics.pairwise import additive_chi2_kernel
 
-def kcluster(theta):
+# Function: kcluster
+#
+# Inputs:
+# @theta: the kernel parameter vector, specifiying kernel parameters and weights
+# @x: the first input vector
+# @y: the second input vector
+
+# TODO: Shoudl the kernel still work if (x,y) are a different size? For example,
+# if a particular cancer doesn't have miRNA data and x/y are size 60 instead of
+# 80 it should still be cool right? -> Therefore, we don't have to specify in
+# this function what features we're looking at right?
+
+def kcluster(theta, x, y):
     
     ###############################
     #    Global Data Structures   #
@@ -30,8 +42,9 @@ def kcluster(theta):
     # Kernel Parameter Vector (Theta):
     # Each type of kernel has three copies of the following (contiously):
     # 
-    # Kernel Documentation: http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics.pairwise 
+    # Regular Kernel Documentation: http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics.pairwise 
     #
+    # This is just for regular kernels (use some of these)?:
     # Cosine Similarity: weight 
     # Linear Kernel: weight
     # Polynomial Kernel: weight, degree, gamma
@@ -43,7 +56,24 @@ def kcluster(theta):
     # Chi2 Additive Kernel: weight 
     # Number of Clusters (integer)
     #
+    # Or should the kernel approximations be enough?
+    # 
+    # Approximate Kernels Documetation: http://scikit-learn.org/stable/modules/classes.html#module-sklearn.kernel_approximation
+    # AdditiveChi2: weight, sample_steps
+    # Nystroem: weight, gamma, (random_state = 1)
+    # RBFSampler: weight, gamma, (random_state = 1)
+    # SkewedChi2: weight, skewedness, n_components, (random_state = 1)
+    #
     # The theta vector should be size 43 in length according to the specs given
-    # above.
+    # above. (if using just regular kernels)
     
-    print 'hi'
+    # Inputting 
+
+    
+    print additive_chi2_kernel(x,y)
+    #TODO: Run K-Means Clustering on the clusters that are specified
+    
+x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+y= [3, 4, 6, 8, 6, 4, 3, 2, 4, 3]
+t = [0]
+kcluster(t,x,y)
