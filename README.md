@@ -11,8 +11,8 @@ To read more about kcluster, please refer to "Kernel Learning Framework For Canc
 
 [**scikit-learn (>=0.17)**](http://scikit-learn.org/stable/install.html)
 
-	[**numpy (>=1.61)**](http://www.numpy.org/)
+[**numpy (>=1.61)**](http://www.numpy.org/)
 
-	[**scipy (>=0.9)**](http://www.scipy.org/install.html)
+[**scipy (>=0.9)**](http://www.scipy.org/install.html)
 
 It is recommended to install these dependencies via the [**Anaconda**](https://www.continuum.io/downloads) package.
