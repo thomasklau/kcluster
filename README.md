@@ -5,12 +5,12 @@ kcluster is an open-source toolkit for applying kernel methods to cancer subtype
 kcluster provides a Python API that can be run on TCGA (The Cancer Genome Atlas) datasets. 
 
 # Dependencies
-[Python (>=2.6)](tps://www.python.org/downloads/)
+[**Python (>=2.6)**](https://www.python.org/downloads/)
 
-[scikit-learn (>=0.17)](http://scikit-learn.org/stable/install.html)
+[**scikit-learn (>=0.17)**](http://scikit-learn.org/stable/install.html)
 
-[numpy (>=1.61)](http://www.numpy.org/)
+[**numpy (>=1.61)**](http://www.numpy.org/)
 
-[scipy (>=0.9)](http://www.scipy.org/install.html)
+[**scipy (>=0.9)**](http://www.scipy.org/install.html)
 
 It is recommended to install these dependencies via the [**Anaconda**](https://www.continuum.io/downloads) package.
