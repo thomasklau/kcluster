@@ -34,8 +34,10 @@ from sklearn.metrics.pairwise import rbf_kernel
 from sklearn.metrics.pairwise import laplacian_kernel
 from sklearn.metrics.pairwise import sigmoid_kernel
 
-# Function: kcluster
-#
+# Function: calculateMultipleKernel
+# Calculates the value of the linear combintation of kernels given the kernel
+# input vector and the input vectors x and y.
+# 
 # Inputs:
 # @theta: the kernel parameter vector, specifiying kernel parameters and weights
     # Theta Variable Layout:
@@ -53,12 +55,12 @@ from sklearn.metrics.pairwise import sigmoid_kernel
     #
     # Kernel Documentation: http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics.pairwise 
     #
-    # The theta vector should be size 43 in length according to the specs given
+    # The theta vector should be size 46 in length according to the specs given
     # above.
 # @x: the first input array-like of shape (n_samples_X = 1, n_features)
 # @y: the second input array-like of shape (n_samples_Y = 1, n_features)
 
-def kcluster(theta, x, y):
+def calculateMultipleKernel(theta, x, y):
     # Convert our 2d arrays to numpy arrays
     x = np.array(x)
     y = np.array(y)
@@ -104,10 +106,25 @@ def kcluster(theta, x, y):
         kernelResult += theta[index] * sigmoid_kernel(x,y,theta[index+1])
         index += 2
         
-    print kernelResult
-    #TODO: Run K-Means Clustering on the clusters that are specified
-    
-x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-y = [3, 4, 5, 2, 3, 5, 7, 9, 3, 2]
-t = random.sample(range(1,100),60)
-kcluster(t,x,y)
+    print index
+    return kernelResult
+
+# Function: kMeansClustering
+# Performs k-means clustering on a given X, Y, and kernel vector (theta)
+# 
+# Inputs:
+# @theta: See calculateMultipleKernel for the information about theta
+# @x: input array-like of shape (n_samples_X = N, n_features)
+def kMeansClustering(theta,X):
+    numClusters = theta[45]
+    print numClusters
+    #TODO: Implement kMeans Clustering
+
+# sample input X Array; each row is a different sample, each column is a feature
+x = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+     [7, 2, 0, 2, 3, 7, 10, 3, 2, 3]]
+# randomly generated theta of length 46
+t = random.sample(range(1,47),46) # given a random theta for now
+
+# perform kMeansClustering and return the clusters
+kMeansClustering(t,x)
