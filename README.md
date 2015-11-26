@@ -15,6 +15,6 @@ To read more about kcluster, please refer to "Kernel Learning Framework For Canc
 
 [**scipy (>=0.9)**](http://www.scipy.org/install.html)
 
-[**fbget**](https://confluence.broadinstitute.org/display/GDAC/fbget) (See instructions to download *fbget zipfile*)
+[**fbget (>=0.1.5)**](https://confluence.broadinstitute.org/display/GDAC/fbget) (See instructions to download *fbget zipfile*)
 
 It is recommended to install these dependencies via the [**Anaconda**](https://www.continuum.io/downloads) package.
