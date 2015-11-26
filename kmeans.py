@@ -1,4 +1,20 @@
-#!/usr/bin/env python
+# ---------------------------------------------------------------------------#
+#                                 kCluster                                   #
+# ---------------------------------------------------------------------------#
+#                                                                            #
+# Kmeans uses scipy.spatial.distance to calculate any of 20-odd metrics      #
+# in the scipy package (or a custom defined metric). #
+#                                                                            #
+# Licensed under the Apache License, Version 2.0 (the "License"); you may    #
+# not use this file except in compliance with the License. You may obtain a  #
+# copy of the License at http://www.apache.org/licenses/LICENSE-2.0.         #
+# Unless required by applicable law or agreed to in writing, software        #
+# distributed under the License is distributed on an "AS IS" BASIS,          #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
+# See the License for the specific language governing permissions and        #
+# limitations under the License.                                             #
+# ---------------------------------------------------------------------------#
+
 # kmeans.py using any of the 20-odd metrics in scipy.spatial.distance
 # kmeanssample 2 pass, first sample sqrt(N)
 
@@ -7,81 +23,8 @@ import random
 from scipy.spatial.distance import cdist  # $scipy/spatial/distance.py
     # http://docs.scipy.org/doc/scipy/reference/spatial.html
 from scipy.sparse import issparse  # $scipy/sparse/csr.py
-
-# IMPORTS
 import numpy as np
 import scipy as sp
-import random
-
-# Kernels
-from sklearn.metrics.pairwise import additive_chi2_kernel
-from sklearn.metrics.pairwise import chi2_kernel
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.metrics.pairwise import linear_kernel
-from sklearn.metrics.pairwise import polynomial_kernel
-from sklearn.metrics.pairwise import rbf_kernel
-from sklearn.metrics.pairwise import laplacian_kernel
-from sklearn.metrics.pairwise import sigmoid_kernel
-
-theta = 0
-
-# Function: calculateMultipleKernel
-# Calculates the value of the linear combintation of kernels given the kernel
-# input vector and the input vectors x and y.
-# 
-# Inputs:
-# @x: the first input array-like of shape (n_samples_X = 1, n_features)
-# @y: the second input array-like of shape (n_samples_Y = 1, n_features)
-
-def calculateMultipleKernel(x, y):
-    theta = random.sample(range(1,47),46) # given a random theta for now
-
-    # Convert our 2d arrays to numpy arrays
-    x = np.array(x)
-    y = np.array(y)
-    
-    # Reshape the array-like input vectors since we only have one sample
-    x = x.reshape(1,-1)
-    y = y.reshape(1,-1)
-    
-    # Variables to aggregate the kernel result
-    kernelResult = 0;
-    index = 0; 
-    
-    for i in range(0,3):
-        kernelResult += theta[index] * additive_chi2_kernel(x,y)
-        index += 1
-        
-    for i in range(0,3):
-        kernelResult += theta[index] * chi2_kernel(x,y,theta[index+1])
-        index += 2
-    
-    for i in range(0,3):
-        kernelResult += theta[index] * cosine_similarity(x,y)
-        index += 1
-    
-    for i in range(0,3):
-        kernelResult += theta[index] * linear_kernel(x,y)
-        index += 1
-    
-    for i in range(0,3):
-        kernelResult += theta[index] * polynomial_kernel(
-            x,y,theta[index+1],theta[index+2], theta[index+3])
-        index += 4
-        
-    for i in range(0,3):
-        kernelResult += theta[index] * rbf_kernel(x,y,theta[index+1])
-        index += 2
-        
-    for i in range(0,3):
-        kernelResult += theta[index] * laplacian_kernel(x,y,theta[index+1])
-        index += 2
-    
-    for i in range(0,3):
-        kernelResult += theta[index] * sigmoid_kernel(x,y,theta[index+1])
-        index += 2
-        
-    return kernelResult
 
 #...............................................................................
 

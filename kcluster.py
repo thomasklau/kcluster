@@ -23,6 +23,8 @@
 import numpy as np
 import scipy as sp
 import random
+from kmeans import kmeans
+from kmeans import kmeanssample
 
 # Kernels
 from sklearn.metrics.pairwise import additive_chi2_kernel
@@ -34,12 +36,10 @@ from sklearn.metrics.pairwise import rbf_kernel
 from sklearn.metrics.pairwise import laplacian_kernel
 from sklearn.metrics.pairwise import sigmoid_kernel
 
-# Function: calculateMultipleKernel
-# Calculates the value of the linear combintation of kernels given the kernel
-# input vector and the input vectors x and y.
-# 
-# Inputs:
-# @theta: the kernel parameter vector, specifiying kernel parameters and weights
+################################
+#       GLOBAL VARIABLES       #
+################################
+# theta: the kernel parameter vector, specifiying kernel parameters and weights
     # Theta Variable Layout:
     # Each type of kernel has three copies of the following (contiously):
     # 
@@ -57,10 +57,20 @@ from sklearn.metrics.pairwise import sigmoid_kernel
     #
     # The theta vector should be size 46 in length according to the specs given
     # above.
+
+theta = 0
+
+# Function: calculateMultipleKernel
+# Calculates the value of the linear combintation of kernels given the kernel
+# input vector and the input vectors x and y.
+# 
+# Inputs:
 # @x: the first input array-like of shape (n_samples_X = 1, n_features)
 # @y: the second input array-like of shape (n_samples_Y = 1, n_features)
 
-def calculateMultipleKernel(theta, x, y):
+def calculateMultipleKernel(x, y):
+    theta = random.sample(range(1,47),46) # given a random theta for now
+
     # Convert our 2d arrays to numpy arrays
     x = np.array(x)
     y = np.array(y)
@@ -106,25 +116,45 @@ def calculateMultipleKernel(theta, x, y):
         kernelResult += theta[index] * sigmoid_kernel(x,y,theta[index+1])
         index += 2
         
-    print index
     return kernelResult
-
-# Function: kMeansClustering
-# Performs k-means clustering on a given X, Y, and kernel vector (theta)
-# 
-# Inputs:
-# @theta: See calculateMultipleKernel for the information about theta
-# @x: input array-like of shape (n_samples_X = N, n_features)
-def kMeansClustering(theta,X):
-    numClusters = theta[45]
-    print numClusters
-    #TODO: Implement kMeans Clustering
-
+    
 # sample input X Array; each row is a different sample, each column is a feature
 x = [[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
      [7, 2, 0, 2, 3, 7, 10, 3, 2, 3]]
+
 # randomly generated theta of length 46
-t = random.sample(range(1,47),46) # given a random theta for now
+theta = random.sample(range(1,47),46) # given a random theta for now
 
 # perform kMeansClustering and return the clusters
-kMeansClustering(t,x)
+if __name__ == "__main__":
+    import random
+    import sys
+    from time import time
+
+    N = 10000
+    dim = 10
+    ncluster = 10
+    kmsample = 100  # 0: random centres, > 0: kmeanssample
+    kmdelta = .001
+    kmiter = 10
+    metric = calculateMultipleKernel  # "chebyshev" = max, "cityblock" L1,  Lqmetric
+    seed = 1
+
+    np.random.seed(seed)
+    random.seed(seed)
+
+    print "N %d  dim %d  ncluster %d  kmsample %d  metric %s" % (
+        N, dim, ncluster, kmsample, metric)
+    X = np.random.exponential( size=(N,dim) )
+        # cf scikits-learn datasets/
+    t0 = time()
+    if kmsample > 0:
+        centres, xtoc, dist = kmeanssample( X, ncluster, nsample=kmsample,
+            delta=kmdelta, maxiter=kmiter, metric=metric, verbose=2 )
+    else:
+        randomcentres = randomsample( X, ncluster )
+        centres, xtoc, dist = kmeans( X, randomcentres,
+            delta=kmdelta, maxiter=kmiter, metric=metric, verbose=2 )
+    print "%.0f msec" % ((time() - t0) * 1000)
+
+    # also ~/py/np/kmeans/test-kmeans.py
