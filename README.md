@@ -20,4 +20,5 @@ To read more about kcluster, please refer to "Kernel Learning Framework For Canc
 [**firebrowse (>=0.1.5)**](https://confluence.broadinstitute.org/display/GDAC/fbget)
 
 It is recommended to install these dependencies via the [**Anaconda**](https://www.continuum.io/downloads) package.
-Or install dependencies manually using `pip` and [**virtualenv**](http://docs.python-guide.org/en/latest/dev/virtualenvs/)
+
+If you don't want to use python, you can install dependencies manually using `pip` inside a [**virtualenv**](http://docs.python-guide.org/en/latest/dev/virtualenvs/)
