@@ -21,4 +21,4 @@ To read more about kcluster, please refer to "Kernel Learning Framework For Canc
 
 It is recommended to install these dependencies via the [**Anaconda**](https://www.continuum.io/downloads) package.
 
-If you don't want to use python, you can install dependencies manually using `pip` inside a [**virtualenv**](http://docs.python-guide.org/en/latest/dev/virtualenvs/)
+If you don't want to use Anaconda, you can install dependencies manually using `pip` inside a [**virtualenv**](http://docs.python-guide.org/en/latest/dev/virtualenvs/)
