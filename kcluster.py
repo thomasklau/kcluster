@@ -20,6 +20,9 @@
 # ---------------------------------------------------------------------------#
 
 # IMPORTS
+import numpy as np
+import scipy as sp
+import random
 
 # Kernels
 from sklearn.metrics.pairwise import additive_chi2_kernel
@@ -35,42 +38,76 @@ from sklearn.metrics.pairwise import sigmoid_kernel
 #
 # Inputs:
 # @theta: the kernel parameter vector, specifiying kernel parameters and weights
-# @x: the first input array-like of shape (n_samples_X = 1, n_features)
-# @y: the second input array-like of shape (n_samples_Y = 1, n_features)
-
-def kcluster(theta, x, y):
-    
-    ###############################
-    #    Global Data Structures   #
-    ###############################
-    
-    # Kernel Parameter Vector (Theta):
+    # Theta Variable Layout:
     # Each type of kernel has three copies of the following (contiously):
     # 
     # Additive Chi2 Kernel: weight 
     # Chi2 Kernel: weight, gamma
     # Cosine Similarity: weight
     # Linear Kernel: weight
-    # Polynomial Kernel: weight, degree, gamma
+    # Polynomial Kernel: weight, degree, gamma, coef0
     # RBF Kernel: weight, gamma
     # Laplacian Kernel: weight, gamma
     # Sigmoid Kernel: weight
-    # 
     # Number of Clusters: integer
     #
     # Kernel Documentation: http://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics.pairwise 
     #
     # The theta vector should be size 43 in length according to the specs given
-    # above. (if using just regular kernels)
+    # above.
+# @x: the first input array-like of shape (n_samples_X = 1, n_features)
+# @y: the second input array-like of shape (n_samples_Y = 1, n_features)
+
+def kcluster(theta, x, y):
+    # Convert our 2d arrays to numpy arrays
+    x = np.array(x)
+    y = np.array(y)
     
+    # Reshape the array-like input vectors since we only have one sample
+    x = x.reshape(1,-1)
+    y = y.reshape(1,-1)
+    
+    # Variables to aggregate the kernel result
     kernelResult = 0;
-    thetaCounter = 0; # Keeps track of the current Kernel
+    index = 0; 
     
+    for i in range(0,3):
+        kernelResult += theta[index] * additive_chi2_kernel(x,y)
+        index += 1
+        
+    for i in range(0,3):
+        kernelResult += theta[index] * chi2_kernel(x,y,theta[index+1])
+        index += 2
     
-    print cosine_similarity(x,y)
+    for i in range(0,3):
+        kernelResult += theta[index] * cosine_similarity(x,y)
+        index += 1
+    
+    for i in range(0,3):
+        kernelResult += theta[index] * linear_kernel(x,y)
+        index += 1
+    
+    for i in range(0,3):
+        kernelResult += theta[index] * polynomial_kernel(
+            x,y,theta[index+1],theta[index+2], theta[index+3])
+        index += 4
+        
+    for i in range(0,3):
+        kernelResult += theta[index] * rbf_kernel(x,y,theta[index+1])
+        index += 2
+        
+    for i in range(0,3):
+        kernelResult += theta[index] * laplacian_kernel(x,y,theta[index+1])
+        index += 2
+    
+    for i in range(0,3):
+        kernelResult += theta[index] * sigmoid_kernel(x,y,theta[index+1])
+        index += 2
+        
+    print kernelResult
     #TODO: Run K-Means Clustering on the clusters that are specified
     
 x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-y= [3, 4, 6, 8, 6, 4, 3, 2, 4, 3]
-t = [0,0]
+y = [3, 4, 5, 2, 3, 5, 7, 9, 3, 2]
+t = random.sample(range(1,100),60)
 kcluster(t,x,y)
