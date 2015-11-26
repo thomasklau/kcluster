@@ -1,9 +1,9 @@
 # See https://confluence.broadinstitute.org/display/GDAC/fbget#main-content.wiki-content
 # Also see http://firebrowse.org/api-docs/
-import fbget
+import firebrowse
 
 # example query of fbget on EGFR's mRNAseq information in UCS cohort
-print fbget.mrnaseq("egfr", cohort="ucs", format = "json")
+print  firebrowse.Samples().mRNASeq(gene="egfr", cohort="ucs")
 
 # we can additionally get this data in JSON format
 # 
