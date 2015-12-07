@@ -3,3 +3,4 @@ numpy>=1.6.1
 scipy>=0.9
 requests>=2.8.1
 firebrowse>=0.1.5
+rpy2==2.3.0
