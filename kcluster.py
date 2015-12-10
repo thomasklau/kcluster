@@ -10,11 +10,26 @@ class Clusterer():
     Class for clustering sparsely labeled data. Includes visualization
     functionality.
     """
-    def __init__(self,datafile=None,generate_test=False):
+    def __init__(self,datafile=None,generate_test=False,kernel_dim=10):
         if generate_test:
             self.X = self.generate_test_data()
         else:
             self.X = self.read_data(datafile)
+
+        # record dimensions
+        self.dim,self.n = self.X.shape # (n=samples, dim=dimensions)
+        self.m = kernel_dim
+
+        # initialize P
+        self.P = np.dot(self.X.T,self.X)
+
+        # initialize M-matrix
+        self.M = np.tile(np.einsum('ij,ji->i',self.X.T,self.X),(n,1)).T
+        self.M += np.tile(np.einsum('ij,ji->i',self.X.T,self.X),(n,1))
+        self.M += -2*P
+
+        # initialize mu
+        self.mu = np.ones(self.m)/self.m
 
     def generate_test_data(self):
         """
@@ -38,7 +53,7 @@ class Clusterer():
             return np.load(f,allow_pickle=False)
 
     def cluster(self):
-        print ("Clustering...done.")
+        print ("Clustering...")
 
     def get_clustering(self):
         pass
