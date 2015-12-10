@@ -80,4 +80,10 @@ class preprocessor():
     """
     @staticmethod
     def process(file_list):
+        """
+        Process all files listed in file_list from the downloads folder
+        into a single data structure and then pickle to another file.
+
+        First checks for the existence of the pickled file.
+        """
         print ("Processing...done")
