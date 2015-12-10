@@ -6,12 +6,14 @@ class downloader():
     """
     Tools to help with downloading TCGA datasets.
     """
+    @staticmethod
     def download(files):
-        print ("downloading...done.")
+        print ("Downloading...done.")
 
 class preprocessor():
     """
     Tools to help with preprocessing and standardizing TCGA datasets.
     """
+    @staticmethod
     def process(files):
-        print ("processing...done")
+        print ("Processing...done")

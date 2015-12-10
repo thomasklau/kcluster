@@ -2,7 +2,7 @@
 Tools to an run an alternating UMKL algorithm on TCGA data.
 """
 
-class clusterer():
+class Clusterer():
     """
     Class for clustering sparsely labeled data. Includes visualization
     functionality.

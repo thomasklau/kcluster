@@ -4,24 +4,20 @@ Primary driver code for the kcluster pipeline.
 
 import sys
 from tcga_tools import downloader, preprocessor
-from kcluster import clusterer
+from kcluster import Clusterer
 
 def print_help():
-    print(
-    """
-    kCluster | version 0.0.1 | Bradbury, Lau, Roy
+    print("""kCluster | version 0.0.1 | Bradbury, Lau, Roy
 
-    python main.py [help] [download] [preprocess] [kcluster]
+python main.py [help] [download] [preprocess] [kcluster]
 
-    help        -- print this help message
-    download    -- download files listed in tcga_files.json
-    preprocess  -- preprocess already downloaded files
-    kcluster    -- run the kcluster algorithm and display results
+help        -- print this help message
+download    -- download files listed in tcga_files.json
+preprocess  -- preprocess already downloaded files
+kcluster    -- run the kcluster algorithm and display results
 
-    Submodules can be combined together to execute multiple
-    functions in a single call.
-    """
-    )
+Submodules can be combined together to execute multiple
+functions in a single call.""")
 
 def main():
     argv = [a.lower() for a in sys.argv]
