@@ -1,8 +1,6 @@
 import urllib2
 
-url = "http://gdac.broadinstitute.org/runs/stddata__2015_06_01/data/BRCA/20150601/gdac.broadinstitute.org_BRCA.RPPA_AnnotateWithGene.Level_3.2015060100.0.0.tar.gz"
-
-def downloadFile(url, file_name):
+def download_file(url, file_name):
 	u = urllib2.urlopen(url)
 	f = open(file_name, 'wb')
 	meta = u.info()

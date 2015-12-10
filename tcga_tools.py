@@ -2,18 +2,82 @@
 Helpful tools for downloading and processing TCGA data from The Broad Institute.
 """
 
+import firebrowse
+import json
+import re
+import download
+import tarfile
+
 class downloader():
     """
     Tools to help with downloading TCGA datasets.
     """
     @staticmethod
-    def download(files):
-        print ("Downloading...done.")
+    def download(file_list):
+        data = get_firehose_response()
+        filter_objects(data)
+        filenames = download_from_urls(data)
+        untar_all(filenames)
+        write_filenames(filenames,file_list)
+
+    @staticmethod
+    def get_firehose_response():
+        resp = firebrowse.Archives().StandardData(cohort="brca", date='2015_06_01', data_type='CopyNumber,RPPA,Methylation', page="1", page_size="2000")
+        return json.loads(resp)
+
+    @staticmethod
+    def include_obj(obj):
+        if obj["sample_prep"] == "ffpe":
+            return False
+        elif obj["data_type"] == "Methylation" and ("platform" not in obj or obj["platform"] == "humanmethylation450"):
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def include_URL(url):
+    	if re.search("Level_3\.[0-9]{10}\.0\.0\.tar.gz$", url):
+    		return True
+    	else:
+    		return False
+
+    @staticmethod
+    def filter_objects(data):
+        data["StandardData"] = [obj for obj in data["StandardData"] if include_obj(obj)]
+        for i in range(len(data["StandardData"])):
+            data["StandardData"][i]["urls"] = [url for url in data["StandardData"][i]["urls"] if include_URL(url)]
+
+    @staticmethod
+    def download_from_urls(data):
+        filenames = []
+        for obj in data["StandardData"]:
+        	fname = obj["urls"][0].split('/')[-1]
+        	download.download_file(obj["urls"][0], "./data/download/"+fname)
+        	filenames.append(fname)
+        return filenames
+
+    @staticmethod
+    def untar(fname):
+      if (fname.endswith("tar.gz")):
+          tar = tarfile.open(fname)
+          tar.extractall()
+          tar.close()
+
+    @staticmethod
+    def untar_all(filenames):
+        for fname in filenames:
+            untar("./data/download/"+fname)
+
+    @staticmethod
+    def write_filenames(filenames,file_list):
+        with open(file_list, 'w') as f:
+            f.write(json.dumps(filenames, indent=2, separators=(',', ': ')))
+
 
 class preprocessor():
     """
     Tools to help with preprocessing and standardizing TCGA datasets.
     """
     @staticmethod
-    def process(files):
+    def process(file_list):
         print ("Processing...done")
