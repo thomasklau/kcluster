@@ -1,7 +1,17 @@
+import os
 import urllib2
 
 def download_file(url, file_name):
+	print url
 	u = urllib2.urlopen(url)
+
+	dir = os.path.dirname(file_name)
+	if not os.path.exists(dir):
+		os.makedirs(dir)
+	else: # if the file is already downloaded
+		print "-Already downloaded"
+		return
+
 	f = open(file_name, 'wb')
 	meta = u.info()
 	file_size = int(meta.getheaders("Content-Length")[0])
