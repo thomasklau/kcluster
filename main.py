@@ -29,7 +29,7 @@ def main():
         downloader.download('tcga_files.json')
         downloader.rename_all_data()
     if 'preprocess' in argv:
-        preprocessor.process('tcga_files.json')
+        preprocessor.process()
     if 'kcluster' in argv:
         kc = Clusterer('./data/processed.dat')
         kc.cluster()

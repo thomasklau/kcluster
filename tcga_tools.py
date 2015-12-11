@@ -70,11 +70,23 @@ class downloader():
             downloader.untar('./data/download/'+fname)
 
     @staticmethod
-    def rename_all_data():
+    def getDataFolders():
+        '''
+        Return the names of all the folders in the unzipped data folder in
+        the form of an array
+        '''
+        
         folders = []
         for name in os.listdir('./data/unzipped'):
             if os.path.isdir(name):
                 folders.append(name)
+            
+        return folders
+    
+    @staticmethod
+    def rename_all_data():
+        folders = downloader.getDataFolders()
+        
         subdirectory = []
         for folder in folders:
             for name in os.listdir('./data/unzipped/' + folder):
@@ -86,33 +98,33 @@ class downloader():
         with open(file_list, 'w') as f:
             f.write(json.dumps(filenames, indent=2, separators=(',', ': ')))
 
-
 class preprocessor():
     """
     Tools to help with preprocessing and standardizing TCGA datasets.
     """
+
     @staticmethod
-    def process(file_list):
+    def process():
         """
         Process all files listed in file_list from the downloads folder
         into a single data structure and then pickle to another file.
 
         First checks for the existence of the pickled file.
         """
-
-        f = open(file_list, 'r')
         
-        #gather the filenames for every type of preprocessing
+        folders = downloader.getDataFolders()
+        print folders
+        # gather the folders for every type of preprocessing
+        # Note: The data in each folder is named 'data.txt'
         rpaa_list = []
         snp_list = []
         
-        for file in f:
-            if 'rpaa' in file.lower():
-                rpaa_list.append(file)
+        for folder in folders:
+            
+            if 'rppa' in folder.lower():
+                rpaa_list.append(folder)
                 
-            if 'snp' in file.lower():
-                snp_list.append(file)
-        
-        f.close()
+            if 'snp' in folder.lower():
+                snp_list.append(folder)
         
         print ("Processing...done")
