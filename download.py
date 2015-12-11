@@ -2,7 +2,6 @@ import os
 import urllib2
 
 def download_file(url, file_name):
-	print url
 	u = urllib2.urlopen(url)
 
 	dir = os.path.dirname(file_name)

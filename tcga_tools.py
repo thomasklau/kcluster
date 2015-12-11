@@ -7,6 +7,7 @@ import json
 import re
 import download
 import tarfile
+import os
 
 class downloader():
     """
@@ -58,15 +59,27 @@ class downloader():
 
     @staticmethod
     def untar(fname):
-      if (fname.endswith("tar.gz")):
+      if (fname.endswith('tar.gz')):
           tar = tarfile.open(fname)
-          tar.extractall("./data/unzipped/")
+          tar.extractall('./data/unzipped/')
           tar.close()
 
     @staticmethod
     def untar_all(filenames):
         for fname in filenames:
-            downloader.untar("./data/download/"+fname)
+            downloader.untar('./data/download/'+fname)
+
+    @staticmethod
+    def rename_all_data():
+        folders = []
+        for name in os.listdir('./data/unzipped'):
+            if os.path.isdir(name):
+                folders.append(name)
+        subdirectory = []
+        for folder in folders:
+            for name in os.listdir('./data/unzipped/' + folder):
+                if ('Level_3' in name):
+                    os.rename('./data/unzipped/' + folder + '/' + name, './data/unzipped/' + folder + '/data.txt')
 
     @staticmethod
     def write_filenames(filenames,file_list):

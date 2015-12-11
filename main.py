@@ -27,6 +27,7 @@ def main():
         exit()
     if 'download' in argv:
         downloader.download('tcga_files.json')
+        downloader.rename_all_data()
     if 'preprocess' in argv:
         preprocessor.process('tcga_files.json')
     if 'kcluster' in argv:
