@@ -84,8 +84,9 @@ class Clusterer():
         with open(datafile) as f:
             return np.load(f,allow_pickle=False)
 
-    def cluster(self):
-        print ("Clustering...done.")
+    def cluster(self, num_iterations=30):
+        for iteration in range(30):
+            W = np.zeros()
 
     def get_clustering(self):
         pass
