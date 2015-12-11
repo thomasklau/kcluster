@@ -166,4 +166,17 @@ class preprocessor():
                 
         preprocessor.processRPPA(rppa_list, thetadict)
         
+        '''a = np.ndarray([1,2,3])
+        b = np.ndarray([2,3,4])
+        
+        print a
+        print b
+        print np.hstack((a,b))'''
+        
+        for key in thetadict:
+            row = np.ndarray([])
+            for array in thetadict[key]:
+                print array
+                # np.hstack((row,array)) <- not working for some reason
+        
         print ("Processing...done")
