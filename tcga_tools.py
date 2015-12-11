@@ -104,7 +104,7 @@ class preprocessor():
     """
     
     @staticmethod
-    def processRPPA(rppaFolders, theta):
+    def processRPPA(rppaFolders, thetadict):
         for folder in rppaFolders:
             if 'annotatewithgene' in folder.lower():
                 array = np.genfromtxt('./data/unzipped/' + folder + '/data.txt', dtype=None, delimiter = '\t')
@@ -116,10 +116,10 @@ class preprocessor():
                         continue
                     
                     patient_id = array[i][0]
-                    if patient_id not in theta:
-                        theta[patient_id] = []
+                    if patient_id not in thetadict:
+                        thetadict[patient_id] = []
                     
-                    theta[patient_id].append(array[i][1:])
+                    thetadict[patient_id].append(array[i][1:])
             else:
                 array = np.genfromtxt('./data/unzipped/' + folder + '/data.txt', dtype=None, delimiter = '\t')
                 array = np.transpose(array)
@@ -129,10 +129,10 @@ class preprocessor():
                         continue
                     
                     patient_id = array[i][0]
-                    if patient_id not in theta:
-                        theta[patient_id] = []
+                    if patient_id not in thetadict:
+                        thetadict[patient_id] = []
                     
-                    theta[patient_id].append(array[i][2:])
+                    thetadict[patient_id].append(array[i][2:])
                     
     @staticmethod
     def process():
@@ -143,7 +143,7 @@ class preprocessor():
         First checks for the existence of the pickled file.
         """
         
-        theta = {} #dict to store all of the patient vectors
+        thetadict = {} #dict to store all of the patient vectors
         
         folders = downloader.getDataFolders()
 
@@ -164,7 +164,6 @@ class preprocessor():
             if 'cnv' in folder.lower():
                 cnv_list.append(folder)
                 
-        preprocessor.processRPPA(rppa_list, theta)
+        preprocessor.processRPPA(rppa_list, thetadict)
         
-        print theta
         print ("Processing...done")
