@@ -9,7 +9,7 @@ def download_file(url, file_name):
 	if not os.path.exists(dir):
 		os.makedirs(dir)
 	else: # if the file is already downloaded
-		print "-Already downloaded"
+		print "!-Already downloaded-!"
 		return
 
 	f = open(file_name, 'wb')

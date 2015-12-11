@@ -86,4 +86,20 @@ class preprocessor():
 
         First checks for the existence of the pickled file.
         """
+
+        f = open(file_list, 'r')
+        
+        #gather the filenames for every type of preprocessing
+        rpaa_list = []
+        snp_list = []
+        
+        for file in f:
+            if 'rpaa' in file.lower():
+                rpaa_list.append(file)
+                
+            if 'snp' in file.lower():
+                snp_list.append(file)
+        
+        f.close()
+        
         print ("Processing...done")
