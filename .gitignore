@@ -3,3 +3,4 @@ gdac*
 *.r
 *.pyc
 */data/*
+tcga_files.json
