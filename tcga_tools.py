@@ -8,6 +8,7 @@ import re
 import download
 import tarfile
 import os
+import numpy as np
 
 class downloader():
     """
@@ -78,7 +79,6 @@ class downloader():
         
         folders = []
         for name in os.listdir('./data/unzipped'):
-            if os.path.isdir(name):
                 folders.append(name)
             
         return folders
@@ -90,7 +90,7 @@ class downloader():
         subdirectory = []
         for folder in folders:
             for name in os.listdir('./data/unzipped/' + folder):
-                if ('Level_3' in name):
+                if ('Level_3' in name or 'rppa' in name):
                     os.rename('./data/unzipped/' + folder + '/' + name, './data/unzipped/' + folder + '/data.txt')
 
     @staticmethod
@@ -102,7 +102,38 @@ class preprocessor():
     """
     Tools to help with preprocessing and standardizing TCGA datasets.
     """
-
+    
+    @staticmethod
+    def processRPPA(rppaFolders, theta):
+        for folder in rppaFolders:
+            if 'annotatewithgene' in folder.lower():
+                array = np.genfromtxt('./data/unzipped/' + folder + '/data.txt', dtype=None, delimiter = '\t')
+                array = np.transpose(array)
+                totalarray = []
+                
+                for i in range(0,len(array)):
+                    if i == 0:
+                        continue
+                    
+                    patient_id = array[i][0]
+                    if patient_id not in theta:
+                        theta[patient_id] = []
+                    
+                    theta[patient_id].append(array[i][1:])
+            else:
+                array = np.genfromtxt('./data/unzipped/' + folder + '/data.txt', dtype=None, delimiter = '\t')
+                array = np.transpose(array)
+                
+                for i in range(0,len(array)):
+                    if i == 0:
+                        continue
+                    
+                    patient_id = array[i][0]
+                    if patient_id not in theta:
+                        theta[patient_id] = []
+                    
+                    theta[patient_id].append(array[i][2:])
+                    
     @staticmethod
     def process():
         """
@@ -112,19 +143,28 @@ class preprocessor():
         First checks for the existence of the pickled file.
         """
         
+        theta = {} #dict to store all of the patient vectors
+        
         folders = downloader.getDataFolders()
-        print folders
+
         # gather the folders for every type of preprocessing
         # Note: The data in each folder is named 'data.txt'
-        rpaa_list = []
+        rppa_list = []
         snp_list = []
+        cnv_list = []
         
         for folder in folders:
             
             if 'rppa' in folder.lower():
-                rpaa_list.append(folder)
-                
+                rppa_list.append(folder)
+
             if 'snp' in folder.lower():
                 snp_list.append(folder)
+                
+            if 'cnv' in folder.lower():
+                cnv_list.append(folder)
+                
+        preprocessor.processRPPA(rppa_list, theta)
         
+        print theta
         print ("Processing...done")
