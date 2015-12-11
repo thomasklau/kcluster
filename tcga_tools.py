@@ -14,11 +14,11 @@ class downloader():
     """
     @staticmethod
     def download(file_list):
-        data = get_firehose_response()
-        filter_objects(data)
-        filenames = download_from_urls(data)
-        untar_all(filenames)
-        write_filenames(filenames,file_list)
+        data = downloader.get_firehose_response()
+        downloader.filter_objects(data)
+        filenames = downloader.download_from_urls(data)
+        downloader.untar_all(filenames)
+        downloader.write_filenames(filenames,file_list)
 
     @staticmethod
     def get_firehose_response():
@@ -36,37 +36,37 @@ class downloader():
 
     @staticmethod
     def include_URL(url):
-    	if re.search("Level_3\.[0-9]{10}\.0\.0\.tar.gz$", url):
-    		return True
-    	else:
-    		return False
+        if re.search("Level_3\.[0-9]{10}\.0\.0\.tar.gz$", url):
+            return True
+        else:
+            return False
 
     @staticmethod
     def filter_objects(data):
-        data["StandardData"] = [obj for obj in data["StandardData"] if include_obj(obj)]
+        data["StandardData"] = [obj for obj in data["StandardData"] if downloader.include_obj(obj)]
         for i in range(len(data["StandardData"])):
-            data["StandardData"][i]["urls"] = [url for url in data["StandardData"][i]["urls"] if include_URL(url)]
+            data["StandardData"][i]["urls"] = [url for url in data["StandardData"][i]["urls"] if downloader.include_URL(url)]
 
     @staticmethod
     def download_from_urls(data):
         filenames = []
         for obj in data["StandardData"]:
-        	fname = obj["urls"][0].split('/')[-1]
-        	download.download_file(obj["urls"][0], "./data/download/"+fname)
-        	filenames.append(fname)
+            fname = obj["urls"][0].split('/')[-1]
+            download.download_file(obj["urls"][0], "./data/download/"+fname)
+            filenames.append(fname)
         return filenames
 
     @staticmethod
     def untar(fname):
       if (fname.endswith("tar.gz")):
           tar = tarfile.open(fname)
-          tar.extractall()
+          tar.extractall("./data/unzipped/")
           tar.close()
 
     @staticmethod
     def untar_all(filenames):
         for fname in filenames:
-            untar("./data/download/"+fname)
+            downloader.untar("./data/download/"+fname)
 
     @staticmethod
     def write_filenames(filenames,file_list):
