@@ -4,7 +4,7 @@ kcluster is an open-source toolkit for applying kernel methods to cancer subtype
 
 kcluster provides a Python API that can be run on TCGA (The Cancer Genome Atlas) datasets.
 
-To read more about kcluster, please refer to "Kernel Learning Framework For Cancer Subtype Analysis with Mutli-omics Data Integration" (Bradbury, Lau, Roy 2015).
+To read more about kcluster, please refer to ["Kernel Learning Framework For Cancer Subtype Analysis with Mutli-omics Data Integration"](https://github.com/thomasklau/kcluster/blob/master/Kernel%20Learning%20Framework%20for%20Cancer%20Subtype%20Analysis%20with%20Multi-omics%20Data%20Integration.pdf) (Bradbury, Lau, Roy 2015).
 
 # Dependencies
 [**Python (>=2.6)**](https://www.python.org/downloads/)
